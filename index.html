@@ -10,7 +10,7 @@ body {
   font-family: "Segoe UI", sans-serif;
   background: linear-gradient(135deg, #f5f9f9 0%, #e8f5f5 100%);
   color: #333;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 header {
   display: flex;
@@ -26,34 +26,35 @@ header img {
 header h1 {
   flex: 1;
   text-align: center;
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   margin: 0;
 }
 #clock {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: bold;
 }
 .container {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-around;
   padding: 20px;
-  gap: 30px;
+  gap: 20px;
 }
 .table-container {
-  flex: 1;
+  flex: 1 1 45%;
   background: white;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   overflow: hidden;
+  min-width: 300px;
 }
 .table-container h2 {
   background: linear-gradient(90deg, #26a69a, #80cbc4);
   margin: 0;
-  padding: 15px;
+  padding: 12px;
   color: white;
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 }
 table {
   width: 100%;
@@ -61,12 +62,12 @@ table {
 }
 th, td {
   text-align: center;
-  padding: 12px 8px;
+  padding: 10px;
 }
 th {
   background: #e0f2f1;
   color: #004d40;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 td {
   font-size: 1rem;
@@ -76,7 +77,7 @@ td {
   color: #2e7d32;
   font-weight: bold;
 }
-.status.tutup {
+.status.tutup, .status["TIDAK ADA POLI"] {
   color: #c62828;
   font-weight: bold;
 }
@@ -118,26 +119,29 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbw9KS0EGs7F4U0f_G-DoB
 
 async function loadData() {
   try {
-    const res = await fetch(SHEET_URL);
-    const data = await res.json();
+    const response = await fetch(SHEET_URL);
+    const text = await response.text();
+    const jsonMatch = text.match(/\[.*\]/s);
+    const data = jsonMatch ? JSON.parse(jsonMatch[0]) : [];
 
-    const bedah = document.getElementById("bedahTable");
-    const nonBedah = document.getElementById("nonBedahTable");
+    const bedahTable = document.getElementById("bedahTable");
+    const nonBedahTable = document.getElementById("nonBedahTable");
 
     data.forEach(row => {
       const tr = document.createElement("tr");
-      const statusClass = row.Status?.toUpperCase() === "BUKA" ? "buka" : "tutup";
+      const status = (row.Status || "").toUpperCase();
+      const statusClass = status === "BUKA" ? "buka" : "tutup";
       tr.innerHTML = `
-        <td>${row.Spesialis}</td>
-        <td>${row.Dokter}</td>
-        <td><span class="status ${statusClass}">${row.Status}</span></td>
-        <td>${row.Jam}</td>
+        <td>${row.Spesialis || ""}</td>
+        <td>${row.Dokter || ""}</td>
+        <td><span class="status ${statusClass}">${row.Status || ""}</span></td>
+        <td>${row.Jam || ""}</td>
       `;
-      if (row.Jenis?.toLowerCase() === "bedah") bedah.appendChild(tr);
-      else nonBedah.appendChild(tr);
+      if ((row.Jenis || "").toLowerCase() === "bedah") bedahTable.appendChild(tr);
+      else nonBedahTable.appendChild(tr);
     });
-  } catch (err) {
-    console.error("Gagal ambil data:", err);
+  } catch (error) {
+    console.error("❌ Gagal mengambil data:", error);
   }
 }
 
