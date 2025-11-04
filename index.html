@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Display Jadwal Dokter RSU Siaga Medika</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #e6f0ef, #f5faf9);
+    color: #333;
+    overflow: hidden;
+  }
+
+  header {
+    background: linear-gradient(90deg, #009688, #4db6ac);
+    color: white;
+    text-align: center;
+    padding: 18px 0;
+    font-size: 2.2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  }
+
+  .subtitle {
+    background: linear-gradient(90deg, #ffb74d, #ffe0b2);
+    color: #3e2723;
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .section {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: 0.3s ease;
+  }
+
+  .section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+  }
+
+  .section h2 {
+    background: linear-gradient(90deg, #26a69a, #80cbc4);
+    color: white;
+    margin: 0;
+    padding: 12px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  th {
+    background: #f1f8f7;
+    color: #00796b;
+    padding: 12px;
+    font-weight: 600;
+    border-bottom: 2px solid #b2dfdb;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .status {
+    display: inline-block;
+    min-width: 100px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .buka {
+    background: linear-gradient(90deg, #81c784, #66bb6a);
+  }
+
+  .tutup {
+    background: linear-gradient(90deg, #ef9a9a, #e57373);
+  }
+
+  /* Untuk TV besar */
+  @media (min-width: 1080px) {
+    header { font-size: 2.8rem; }
+    .subtitle { font-size: 1.6rem; }
+    table { font-size: 1.4rem; }
+    th, td { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+<header>INFO JADWAL PRAKTIK DOKTER SPESIALIS RSU SIAGA MEDIKA PURBALINGGA</header>
+<div class="subtitle" id="date"></div>
+
+<div class="container">
+  <div class="section">
+    <h2>BEDAH</h2>
+    <table id="bedahTable">
+      <tr><th>Spesialis</th><th>Dokter</th><th>Status</th><th>Jam</th></tr>
+    </table>
+  </div>
+  <div class="section">
+    <h2>NON BEDAH</h2>
+    <table id="nonBedahTable">
+      <tr><th>Spesialis</th><th>Dokter</th><th>Status</th><th>Jam</th></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+const SHEET_URL = "PASTE_URL_APPS_SCRIPT_MU_DI_SINI";
+
+async function loadData() {
+  try {
+    const res = await fetch(SHEET_URL);
+    const data = await res.json();
+
+    const bedah = document.getElementById("bedahTable");
+    const nonBedah = document.getElementById("nonBedahTable");
+
+    bedah.innerHTML = '<tr><th>Spesialis</th><th>Dokter</th><th>Status</th><th>Jam</th></tr>';
+    nonBedah.innerHTML = '<tr><th>Spesialis</th><th>Dokter</th><th>Status</th><th>Jam</th></tr>';
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      const statusClass = row.Status.toUpperCase() === "BUKA" ? "buka" : "tutup";
+      tr.innerHTML = `
+        <td>${row.Spesialis}</td>
+        <td>${row.Dokter}</td>
+        <td><span class="status ${statusClass}">${row.Status}</span></td>
+        <td>${row.Jam}</td>
+      `;
+      if (row.Jenis.toLowerCase() === "bedah") bedah.appendChild(tr);
+      else nonBedah.appendChild(tr);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function updateDate() {
+  const d = new Date();
+  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+  document.getElementById("date").innerText = d.toLocaleDateString('id-ID', options);
+}
+
+updateDate();
+loadData();
+setInterval(loadData, 60000);
+</script>
+</body>
+</html>
