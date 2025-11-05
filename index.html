@@ -1,257 +1,807 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Display Jadwal Dokter - RSU Siaga Medika Purbalingga</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INFO JADWAL PRAKTEK DOKTER SPESIALIS - RSU SIAGA MEDIKA PURBALINGGA</title>
+  <meta name="description" content="Jadwal praktek dokter spesialis RSU Siaga Medika Purbalingga - Informasi terbaru jam praktek dan status dokter">
+  <style>
+    :root {
+      --color-primary: #4fc3f7;
+      --color-secondary: #81c784;
+      --color-accent: #ffb74d;
+      --color-bg: #f8fdff;
+      --color-text: #01579b;
+      --color-text-dark: #002b4d;
+      --color-success: #2e7d32;
+      --color-error: #c62828;
+      --color-warning: #ef6c00;
+      --color-surface: #ffffff;
+      --color-border: #e1f5fe;
+    }
 
-  body {
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(to bottom right, #e8f6f3, #f5fbfc);
-    margin: 0;
-    padding: 0;
-    color: #004d40;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(90deg, #00796b, #0097a7);
-    color: white;
-    padding: 15px 30px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
 
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text-dark);
+      opacity: 0;
+      animation: fadeInPage 1s ease forwards;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-  .logo img {
-    height: 65px;
-    width: 65px;
-    object-fit: contain;
-  }
+    @keyframes fadeInPage {
+      to { opacity: 1; }
+    }
 
-  .header-text {
-    flex-grow: 1;
-    text-align: center;
-  }
+    /* ===== SKIP LINK ===== */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 10px;
+      background: var(--color-primary);
+      color: white;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 4px;
+      z-index: 100;
+      font-weight: 600;
+      transition: top 0.3s;
+    }
 
-  .header-text h1, .header-text h2 {
-    margin: 0;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+    .skip-link:focus {
+      top: 10px;
+    }
 
-  .header-text h1 {
-    font-size: 1.6rem;
-  }
+    /* ===== PARTICLE BACKGROUND ===== */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
 
-  .header-text h2 {
-    font-size: 1.3rem;
-    margin-top: 4px;
-  }
+    .particle {
+      position: absolute;
+      background: rgba(79, 195, 247, 0.3);
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: floatUp linear infinite;
+    }
 
-  .datetime {
-    text-align: right;
-    font-weight: 700;
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255,255,255,0.6);
-  }
+    @keyframes floatUp {
+      from { 
+        transform: translateY(100vh) scale(0.5); 
+        opacity: 0.3; 
+      }
+      to { 
+        transform: translateY(-10vh) scale(1); 
+        opacity: 0; 
+      }
+    }
 
-  .datetime .tanggal {
-    display: block;
-    font-size: 1.2rem;
-  }
+    /* ===== LOADING INDICATOR ===== */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: var(--color-text);
+      font-weight: 600;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      background: var(--color-surface);
+      border-radius: 10px;
+      padding: 20px 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--color-border);
+    }
 
-  .datetime .jam {
-    display: block;
-    font-size: 2.2rem;
-    margin-top: 3px;
-  }
+    .loading.spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(1, 87, 155, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--color-text);
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
 
-  .container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
-    padding: 25px;
-  }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
-  .card {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    overflow: hidden;
-    width: 45%;
-    min-width: 450px;
-  }
+    /* ===== HEADER ===== */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 20px;
+      color: white;
+      font-weight: 700;
+      text-transform: uppercase;
+      overflow: hidden;
+      z-index: 1;
+      flex-shrink: 0;
+      height: 180px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    }
 
-  .card-header {
-    background: linear-gradient(90deg, #00897b, #26a69a);
-    color: white;
-    padding: 14px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.2rem;
-    letter-spacing: 0.5px;
-  }
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(270deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+      background-size: 400% 400%;
+      animation: gradientFlow 12s ease infinite;
+      z-index: -2;
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-  th, td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 1rem;
-  }
+    header h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      line-height: 1.3;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      color: white;
+    }
 
-  th {
-    background: #e0f2f1;
-    font-weight: 700;
-  }
+    /* ===== DATETIME ===== */
+    .datetime {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1.5s ease;
+      position: relative;
+      z-index: 2;
+    }
 
-  td.status span {
-    display: inline-block;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-weight: 600;
-    color: white;
-  }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  td.status .buka {
-    background: #43a047;
-  }
+    .tanggal {
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      animation: slideInDown 1s ease;
+      color: white;
+    }
 
-  td.status .tutup {
-    background: #e53935;
-  }
+    @keyframes slideInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  footer {
-    text-align: center;
-    font-size: 0.9rem;
-    padding: 15px;
-    background: #00796b;
-    color: white;
-    margin-top: 25px;
-    letter-spacing: 0.5px;
-  }
+    .jam {
+      margin-top: 5px;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, #0288d1, #4caf50);
+      padding: 8px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      animation: glowPulse 3s infinite ease-in-out;
+      transition: opacity 0.3s;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
 
-  @media (max-width: 900px) {
-    .card { width: 90%; }
-    header { flex-direction: column; text-align: center; }
-    .datetime { text-align: center; margin-top: 10px; }
-  }
-</style>
+    @keyframes glowPulse {
+      0%,100% { box-shadow: 0 4px 12px rgba(2, 136, 209, 0.4); }
+      50% { box-shadow: 0 4px 20px rgba(2, 136, 209, 0.8); }
+    }
+
+    /* ===== FILTER CONTROLS ===== */
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      padding: 0 20px;
+    }
+
+    .filter-btn {
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary);
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-weight: 600;
+      color: var(--color-text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-btn:hover {
+      background: var(--color-primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3);
+    }
+
+    .filter-btn.active {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+      box-shadow: 0 4px 12px rgba(79, 195, 247, 0.4);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      padding: 0 20px 20px 20px;
+      gap: 20px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 15px 0;
+      flex: 1;
+      min-width: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.8s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section h2 {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      padding: 15px 0;
+      margin: 0 15px 15px;
+      border-radius: 10px;
+      font-size: 1.4rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      flex-shrink: 0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .table-container {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      font-size: 1rem;
+      flex: 1;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    th {
+      background: linear-gradient(135deg, #e1f5fe, #f1f8e9);
+      padding: 14px 8px;
+      color: var(--color-text-dark);
+      font-weight: 700;
+      border-bottom: 3px solid var(--color-primary);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tbody {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    td {
+      padding: 12px 8px;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-dark);
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    tr:hover td {
+      background: #f8fdff;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* STATUS */
+    .status {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      min-width: 100px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .status:focus {
+      outline: 2px solid var(--color-text);
+      outline-offset: 2px;
+    }
+
+    .status.BUKA { 
+      background: linear-gradient(135deg, var(--color-success), #4caf50);
+      border: 1px solid #2e7d32;
+    }
+    .status.TIDAK { 
+      background: linear-gradient(135deg, var(--color-error), #f44336);
+      border: 1px solid #c62828;
+    }
+
+    .status.BUKA::before { content: "🟢 "; }
+    .status.TIDAK::before { content: "🔴 "; }
+
+    tr:hover .status {
+      transform: scale(1.08);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 12px 0;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .footer-scroll {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .footer-scroll p {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scrollLeft 22s linear infinite;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes scrollLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ===== ERROR STATE ===== */
+    .error-message {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--color-error);
+      font-weight: 600;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.1rem;
+    }
+
+    .error-message button {
+      background: var(--color-primary);
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      margin-top: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .error-message button:hover {
+      background: var(--color-secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body {
+        overflow: auto;
+      }
+      
+      .content-wrapper {
+        flex-direction: column;
+        padding: 0 15px 15px 15px;
+      }
+      
+      .section {
+        height: 400px;
+      }
+      
+      header {
+        height: 160px;
+        padding: 15px;
+      }
+      
+      header h1 { 
+        font-size: 1.0rem; 
+      }
+      
+      .tanggal { font-size: 1rem; }
+      .jam { font-size: 1.8rem; }
+      
+      .controls { 
+        gap: 10px; 
+        padding: 0 15px;
+        margin: 10px 0;
+      }
+      
+      .filter-btn { 
+        padding: 8px 16px; 
+        font-size: 0.9rem; 
+      }
+      
+      th, td {
+        padding: 10px 6px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Reduced motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      .particle, .footer-scroll p, .jam, .section {
+        animation: none;
+      }
+      
+      tr:hover .status,
+      tr:hover td {
+        transform: none;
+      }
+    }
+  </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Langsung ke konten utama</a>
+  <div class="particles" id="particles"></div>
+
   <header>
-    <div class="logo">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Hospital_icon_green.svg" alt="Logo RS" />
-    </div>
-
-    <div class="header-text">
-      <h1>INFO JADWAL PENDAFTARAN PRAKTEK DOKTER SPESIALIS</h1>
-      <h2>RSU SIAGA MEDIKA PURBALINGGA</h2>
-    </div>
-
-    <div class="datetime" id="datetime">
-      <span class="tanggal"></span>
-      <span class="jam"></span>
+    <h1>JADWAL PENDAFTARAN PRAKTEK DOKTER SPESIALIS<br>RSU SIAGA MEDIKA PURBALINGGA</h1>
+    <div class="datetime">
+      <div class="tanggal" id="tanggal"></div>
+      <div class="jam" id="jam"></div>
     </div>
   </header>
 
-  <div class="container">
-    <div class="card" id="bedah">
-      <div class="card-header">BEDAH</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Spesialis</th>
-            <th>Dokter</th>
-            <th>Status</th>
-            <th>Jam</th>
-          </tr>
-        </thead>
-        <tbody id="bedahBody"></tbody>
-      </table>
+  <div class="loading" id="loadingIndicator">
+    <span class="spinner"></span>Memuat data jadwal dokter...
+  </div>
+
+  <div class="controls">
+    <button class="filter-btn active" data-filter="all">Semua Dokter</button>
+    <button class="filter-btn" data-filter="BUKA">Sedang Buka</button>
+    <button class="filter-btn" data-filter="TIDAK">Sedang Tutup</button>
+  </div>
+
+  <div class="content-wrapper" id="main-content">
+    <div class="section" id="bedahSection">
+      <h2>BEDAH</h2>
+      <div class="table-container">
+        <table id="tableBedah">
+          <thead>
+            <tr>
+              <th>Spesialis</th>
+              <th>Dokter</th>
+              <th>Status</th>
+              <th>Jam</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="card" id="nonbedah">
-      <div class="card-header">NON BEDAH</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Spesialis</th>
-            <th>Dokter</th>
-            <th>Status</th>
-            <th>Jam</th>
-          </tr>
-        </thead>
-        <tbody id="nonBedahBody"></tbody>
-      </table>
+    <div class="section" id="nonBedahSection">
+      <h2>NON BEDAH</h2>
+      <div class="table-container">
+        <table id="tableNonBedah">
+          <thead>
+            <tr>
+              <th>Spesialis</th>
+              <th>Dokter</th>
+              <th>Status</th>
+              <th>Jam</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <footer>© 2025 RSU Siaga Medika Purbalingga</footer>
+  <footer>
+    <div class="footer-scroll">
+      <p>🌿 Selamat datang di RSU Siaga Medika Purbalingga • Jadwal dokter diperbarui setiap 5 menit • Semoga Anda sehat selalu 💚</p>
+    </div>
+  </footer>
 
   <script>
     const SHEET_URL = "https://script.google.com/macros/s/AKfycbyVnM9JhKx8xj2EZhETj1BdSCnmJxtNBV4eFmohKE0denRS4VEA3JqPI-RVsQFg7ZuEtw/exec";
+    
+    // State management
+    let allData = [];
+    let dataInterval;
+    let currentFilter = 'all';
+
+    // DOM elements
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeParticles();
+      updateDateTime();
+      loadData();
+      
+      // Set up intervals
+      setInterval(updateDateTime, 1000);
+      startDataInterval();
+      
+      // Set up event listeners
+      setupEventListeners();
+      
+      // Handle page visibility changes
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+    });
+
+    function setupEventListeners() {
+      // Filter buttons
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.dataset.filter;
+          setActiveFilter(filter);
+          applyFilter(filter);
+        });
+      });
+    }
+
+    function setActiveFilter(filter) {
+      filterButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+      });
+      currentFilter = filter;
+    }
+
+    function applyFilter(filter) {
+      const rows = document.querySelectorAll('tbody tr');
+      rows.forEach(row => {
+        const status = row.querySelector('.status').classList.contains('BUKA') ? 'BUKA' : 'TIDAK';
+        
+        if (filter === 'all' || filter === status) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
 
     async function loadData() {
       try {
+        showLoading();
+        
         const res = await fetch(SHEET_URL);
+        
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        
         const data = await res.json();
-
-        const bedah = data.filter(d => d.Jenis === "Bedah");
-        const nonBedah = data.filter(d => d.Jenis === "Non Bedah");
-
-        document.getElementById("bedahBody").innerHTML = bedah.map(d => `
-          <tr>
-            <td>${d.Spesialis}</td>
-            <td>${d.Dokter}</td>
-            <td class="status"><span class="${d.Status === 'BUKA' ? 'buka' : 'tutup'}">${d.Status}</span></td>
-            <td>${d.Jam}</td>
-          </tr>`).join("");
-
-        document.getElementById("nonBedahBody").innerHTML = nonBedah.map(d => `
-          <tr>
-            <td>${d.Spesialis}</td>
-            <td>${d.Dokter}</td>
-            <td class="status"><span class="${d.Status === 'BUKA' ? 'buka' : 'tutup'}">${d.Status}</span></td>
-            <td>${d.Jam}</td>
-          </tr>`).join("");
+        allData = data;
+        showData(data);
+        hideLoading();
+        
       } catch (err) {
-        console.error("Gagal mengambil data:", err);
+        console.error("Gagal memuat data:", err);
+        showErrorState();
+        hideLoading();
       }
+    }
+
+    function showData(data) {
+      const bedahTable = document.querySelector("#tableBedah tbody");
+      const nonBedahTable = document.querySelector("#tableNonBedah tbody");
+      
+      bedahTable.innerHTML = "";
+      nonBedahTable.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        showEmptyState();
+        return;
+      }
+
+      data.forEach(item => {
+        const statusClass = item.Status && item.Status.includes("BUKA") ? "BUKA" : "TIDAK";
+        const row = `
+          <tr>
+            <td>${item.Spesialis || '-'}</td>
+            <td>${item.Dokter || '-'}</td>
+            <td><span class="status ${statusClass}" tabindex="0">${item.Status || 'TIDAK'}</span></td>
+            <td>${item.Jam || '-'}</td>
+          </tr>
+        `;
+        
+        if (item.Jenis === "Bedah") {
+          bedahTable.innerHTML += row;
+        } else {
+          nonBedahTable.innerHTML += row;
+        }
+      });
+
+      // Apply current filter after data is loaded
+      applyFilter(currentFilter);
+      
+      // Animate sections
+      document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.remove('show');
+        setTimeout(() => sec.classList.add('show'), 100);
+      });
+    }
+
+    function showLoading() {
+      loadingIndicator.style.display = 'block';
+    }
+
+    function hideLoading() {
+      loadingIndicator.style.display = 'none';
+    }
+
+    function showErrorState() {
+      const errorHTML = `
+        <tr>
+          <td colspan="4" class="error-message">
+            ⚠️ Gagal memuat data jadwal dokter.<br>
+            <button onclick="loadData()">Coba Lagi</button>
+          </td>
+        </tr>
+      `;
+      
+      document.querySelectorAll('tbody').forEach(tbody => {
+        tbody.innerHTML = errorHTML;
+      });
+    }
+
+    function showEmptyState() {
+      const emptyHTML = `
+        <tr>
+          <td colspan="4" class="error-message">
+            📝 Tidak ada data jadwal dokter yang tersedia.
+          </td>
+        </tr>
+      `;
+      
+      document.querySelectorAll('tbody').forEach(tbody => {
+        tbody.innerHTML = emptyHTML;
+      });
     }
 
     function updateDateTime() {
       const now = new Date();
-      const tanggal = now.toLocaleDateString("id-ID", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
+      const tanggal = now.toLocaleDateString('id-ID', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
       });
-      const waktu = now.toLocaleTimeString("id-ID", { hour12: false });
-      document.querySelector("#datetime .tanggal").textContent = tanggal;
-      document.querySelector("#datetime .jam").textContent = waktu;
+      
+      const jam = now.toLocaleTimeString('id-ID', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+      });
+      
+      document.getElementById('tanggal').textContent = tanggal;
+      const jamEl = document.getElementById('jam');
+      jamEl.style.opacity = '0.3';
+      
+      setTimeout(() => { 
+        jamEl.style.opacity = '1'; 
+        jamEl.textContent = jam; 
+      }, 200);
     }
 
-    loadData();
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-    setInterval(loadData, 60000); // refresh tiap 1 menit
+    function initializeParticles() {
+      const particlesContainer = document.getElementById("particles");
+      const particleCount = Math.min(20, window.innerWidth / 30);
+      
+      for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        const size = Math.random() * 8 + 4;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.left = `${Math.random() * 100}%`;
+        p.style.animationDuration = `${10 + Math.random() * 10}s`;
+        p.style.animationDelay = `${Math.random() * 5}s`;
+        particlesContainer.appendChild(p);
+      }
+    }
+
+    function startDataInterval() {
+      dataInterval = setInterval(loadData, 5 * 60 * 1000);
+    }
+
+    function handleVisibilityChange() {
+      if (document.hidden) {
+        clearInterval(dataInterval);
+      } else {
+        startDataInterval();
+        loadData();
+      }
+    }
+
+    // Export functions to global scope for onclick handlers
+    window.loadData = loadData;
   </script>
 </body>
 </html>
