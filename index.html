@@ -167,6 +167,43 @@
       to { transform: rotate(360deg); }
     }
 
+    /* Pulse Dots Animation */
+    .pulse-dots {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: var(--spacing-xs);
+    }
+
+    .pulse-dots span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-primary);
+      margin: 0 2px;
+      animation: pulseDots 1.5s infinite ease-in-out;
+    }
+
+    .pulse-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .pulse-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes pulseDots {
+      0%, 60%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+      30% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
     /* Skeleton Loading */
     .skeleton {
       background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -230,17 +267,29 @@
       z-index: 2;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       color: white;
+      padding-top: 15px;
     }
 
-    /* ===== DATETIME ===== */
-    .datetime {
-      margin-top: var(--spacing-sm);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: fadeIn 1.5s ease;
+    header h2 {
+      margin: 0;
+      font-size: 2.0rem;
+      line-height: 0.8;
+      letter-spacing: 0.5px;
       position: relative;
       z-index: 2;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      color: white;
+      padding-top: 15px;
+    }
+
+    /* ===== CORNER DATETIME ===== */
+    .datetime-corner {
+      position: absolute;
+      top: var(--spacing-md);
+      right: var(--spacing-lg);
+      text-align: right;
+      z-index: 10;
+      animation: fadeIn 1.5s ease;
     }
 
     @keyframes fadeIn {
@@ -248,31 +297,26 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .tanggal {
-      font-size: 1.5rem;
+    .datetime-corner .tanggal {
+      font-size: 1rem;
       font-weight: 600;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      animation: slideInDown 1s ease;
       color: white;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      margin-bottom: 4px;
+      line-height: 1.2;
     }
 
-    @keyframes slideInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .jam {
-      margin-top: var(--spacing-xs);
-      font-size: 1.4rem;
+    .datetime-corner .jam {
+      font-size: 3.0rem;
       font-weight: 700;
       color: white;
       background: linear-gradient(135deg, #0288d1, #4caf50);
-      padding: var(--spacing-xs) var(--spacing-md);
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      padding: 20px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       animation: glowPulse 3s infinite ease-in-out;
-      transition: opacity 0.3s;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      display: inline-block;
     }
 
     @keyframes glowPulse {
@@ -376,7 +420,6 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      text-align: center;
       font-size: 0.9rem;
       flex: 1;
     }
@@ -388,14 +431,63 @@
     }
 
     th {
-      background: linear-gradient(135deg, #e1f5fe, #f1f8e9);
       padding: var(--spacing-sm) var(--spacing-xs);
       color: var(--color-text-dark);
       font-weight: 700;
       border-bottom: 2px solid var(--color-primary);
-      font-size: 1.0rem;
+      font-size: 1.5rem;
       text-transform: uppercase;
       letter-spacing: 0.3px;
+    }
+
+    /* TABLE ALIGNMENT - BEDAH */
+    /* Header alignment */
+    #tableBedah th:nth-child(1), /* Spesialis */
+    #tableBedah th:nth-child(2) { /* Dokter */
+      text-align: left;
+      padding-left: var(--spacing-md);
+    }
+
+    #tableBedah th:nth-child(3), /* Status */
+    #tableBedah th:nth-child(4) { /* Jam */
+      text-align: center;
+    }
+
+    /* Cell alignment */
+    #tableBedah td:nth-child(1), /* Spesialis */
+    #tableBedah td:nth-child(2) { /* Dokter */
+      text-align: left;
+      padding-left: var(--spacing-md);
+    }
+
+    #tableBedah td:nth-child(3), /* Status */
+    #tableBedah td:nth-child(4) { /* Jam */
+      text-align: center;
+    }
+
+    /* TABLE ALIGNMENT - NON BEDAH */
+    /* Header alignment */
+    #tableNonBedah th:nth-child(1), /* Spesialis */
+    #tableNonBedah th:nth-child(2) { /* Dokter */
+      text-align: left;
+      padding-left: var(--spacing-md);
+    }
+
+    #tableNonBedah th:nth-child(3), /* Status */
+    #tableNonBedah th:nth-child(4) { /* Jam */
+      text-align: center;
+    }
+
+    /* Cell alignment */
+    #tableNonBedah td:nth-child(1), /* Spesialis */
+    #tableNonBedah td:nth-child(2) { /* Dokter */
+      text-align: left;
+      padding-left: var(--spacing-md);
+    }
+
+    #tableNonBedah td:nth-child(3), /* Status */
+    #tableNonBedah td:nth-child(4) { /* Jam */
+      text-align: center;
     }
 
     tbody {
@@ -437,35 +529,25 @@
       outline-offset: 2px;
     }
 
-    /*.status.BUKA { 
-      background: linear-gradient(135deg, var(--color-success), #4caf50);
-      border: 1px solid #2e7d32;
-    }
-    .status.TIDAK { 
-      background: linear-gradient(135deg, var(--color-error), #f44336);
-      border: 1px solid #c62828;
-    } */
-
-
     .status.BUKA { 
-  background: linear-gradient(135deg, #0d9488, #10b981);
-  border: 1px solid #047857;
-  box-shadow: 
-    0 4px 12px rgba(16, 185, 129, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
+      background: linear-gradient(135deg, #0d9488, #10b981);
+      border: 1px solid #047857;
+      box-shadow: 
+        0 4px 12px rgba(16, 185, 129, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      color: white;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
 
-.status.TIDAK { 
-  background: linear-gradient(135deg, #f43f5e, #dc2626);
-  border: 1px solid #b91c1c;
-  box-shadow: 
-    0 4px 12px rgba(239, 68, 68, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
+    .status.TIDAK { 
+      background: linear-gradient(135deg, #f43f5e, #dc2626);
+      border: 1px solid #b91c1c;
+      box-shadow: 
+        0 4px 12px rgba(239, 68, 68, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      color: white;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
 
     .status.BUKA::before { content: ""; }
     .status.TIDAK::before { content: ""; }
@@ -543,12 +625,53 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
+    /* ===== MOBILE RESPONSIVE ===== */
+    @media screen and (max-width: 768px) {
+      :root {
+        font-size: 12px;
+      }
+      
+      header h1 {
+        font-size: 2.2rem;
+        padding-top: 20px;
+      }
+      
+      .datetime-corner {
+        top: var(--spacing-sm);
+        right: var(--spacing-md);
+      }
+      
+      .datetime-corner .tanggal {
+        font-size: 0.8rem;
+      }
+      
+      .datetime-corner .jam {
+        font-size: 1rem;
+        padding: 4px 8px;
+      }
+      
+      .content-wrapper {
+        flex-direction: column;
+        padding: 0 var(--spacing-sm) var(--spacing-sm);
+      }
+      
+      th, td {
+        font-size: 1.3rem;
+      }
+      
+      .status {
+        font-size: 1rem;
+        min-width: 70px;
+      }
+    }
+
     /* ===== PRINT STYLES ===== */
     @media print {
       .particles,
       .controls,
       .loading,
-      footer {
+      footer,
+      .datetime-corner {
         display: none !important;
       }
       
@@ -585,6 +708,10 @@
         animation: none;
         background: #f0f0f0;
       }
+      
+      .pulse-dots span {
+        animation: none;
+      }
     }
   </style>
 </head>
@@ -599,17 +726,17 @@
 
   <header>
     <h1>INFO PRAKTEK DOKTER SPESIALIS RSU SIAGA MEDIKA PURBALINGGA</h1>
-    <div class="datetime">
-      <div class="tanggal" id="tanggal"></div>
+    <h2 class="tanggal" id="tanggal"></h2>
+    <div class="datetime-corner">
       <div class="jam" id="jam"></div>
     </div>
   </header>
 
   <div class="loading" id="loadingIndicator">
-    <span class="spinner"></span>Memuat data jadwal dokter...
+    <span class="spinner"></span><span class="pulse-dots"><span></span><span></span><span></span></span>
   </div>
 
- <!-- <div class="controls" role="toolbar" aria-label="Filter jadwal dokter">
+  <!-- <div class="controls" role="toolbar" aria-label="Filter jadwal dokter">
     <button class="filter-btn active" data-filter="all" aria-pressed="true">Semua Dokter</button>
     <button class="filter-btn" data-filter="BUKA" aria-pressed="false">Sedang Buka</button>
     <button class="filter-btn" data-filter="TIDAK" aria-pressed="false">Sedang Tutup</button>
@@ -629,7 +756,7 @@
             </tr>
           </thead>
           <tbody id="bedahBody">
-            <!-- Skeleton loading will be inserted here -->
+            <!-- Data akan dimuat di sini -->
           </tbody>
         </table>
       </div>
@@ -648,7 +775,7 @@
             </tr>
           </thead>
           <tbody id="nonBedahBody">
-            <!-- Skeleton loading will be inserted here -->
+            <!-- Data akan dimuat di sini -->
           </tbody>
         </table>
       </div>
@@ -665,8 +792,8 @@
     const SHEET_URL = "https://script.google.com/macros/s/AKfycbyVnM9JhKx8xj2EZhETj1BdSCnmJxtNBV4eFmohKE0denRS4VEA3JqPI-RVsQFg7ZuEtw/exec";
     
     // ⚙️ SETTING AUTO REFRESH - UBAH DI SINI
-    const REFRESH_INTERVAL = 10000; // 2 menit
-    const CACHE_DURATION = 10000; // 1 menit cache
+    const REFRESH_INTERVAL = 10000; // 10 detik
+    const CACHE_DURATION = 10000; // 10 detik cache
     const FETCH_TIMEOUT = 10000; // 10 detik timeout
 
     let allData = [];
@@ -747,7 +874,7 @@
     }
 
     function showSkeletonLoading() {
-      const skeletonRow = `
+      const skeletonRowBedah = `
         <tr class="skeleton-row">
           <td><div class="skeleton"></div></td>
           <td><div class="skeleton"></div></td>
@@ -756,8 +883,17 @@
         </tr>
       `;
       
-      document.getElementById('bedahBody').innerHTML = skeletonRow.repeat(3);
-      document.getElementById('nonBedahBody').innerHTML = skeletonRow.repeat(5);
+      const skeletonRowNonBedah = `
+        <tr class="skeleton-row">
+          <td><div class="skeleton"></div></td>
+          <td><div class="skeleton"></div></td>
+          <td><div class="skeleton skeleton-status"></div></td>
+          <td><div class="skeleton"></div></td>
+        </tr>
+      `;
+      
+      document.getElementById('bedahBody').innerHTML = skeletonRowBedah.repeat(3);
+      document.getElementById('nonBedahBody').innerHTML = skeletonRowNonBedah.repeat(5);
       
       document.querySelectorAll('.section').forEach(sec => {
         sec.classList.add('show');
@@ -880,18 +1016,26 @@
 
       data.forEach(item => {
         const statusClass = item.Status && item.Status.includes("BUKA") ? "BUKA" : "TIDAK";
-        const row = `
-          <tr>
-            <td>${item.Spesialis || '-'}</td>
-            <td>${item.Dokter || '-'}</td>
-            <td><span class="status ${statusClass}" tabindex="0" aria-label="Status: ${statusClass === 'BUKA' ? 'Buka' : 'Tutup'}">${item.Status || 'TIDAK'}</span></td>
-            <td>${item.Jam || '-'}</td>
-          </tr>
-        `;
         
         if (item.Jenis === "Bedah") {
+          const row = `
+            <tr>
+              <td>${item.Spesialis || '-'}</td>
+              <td>${item.Dokter || '-'}</td>
+              <td><span class="status ${statusClass}" tabindex="0" aria-label="Status: ${statusClass === 'BUKA' ? 'Buka' : 'Tutup'}">${item.Status || 'TIDAK'}</span></td>
+              <td>${item.Jam || '-'}</td>
+            </tr>
+          `;
           bedahTable.innerHTML += row;
         } else {
+          const row = `
+            <tr>
+              <td>${item.Spesialis || '-'}</td>
+              <td>${item.Dokter || '-'}</td>
+              <td><span class="status ${statusClass}" tabindex="0" aria-label="Status: ${statusClass === 'BUKA' ? 'Buka' : 'Tutup'}">${item.Status || 'TIDAK'}</span></td>
+              <td>${item.Jam || '-'}</td>
+            </tr>
+          `;
           nonBedahTable.innerHTML += row;
         }
       });
@@ -946,16 +1090,15 @@
     function updateDateTime() {
       const now = new Date();
       const tanggal = now.toLocaleDateString('id-ID', { 
-        weekday: 'long', 
+        weekday: 'short', 
         year: 'numeric', 
-        month: 'long', 
+        month: 'short', 
         day: 'numeric' 
       });
       
       const jam = now.toLocaleTimeString('id-ID', { 
         hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit' 
+        minute: '2-digit'
       });
       
       document.getElementById('tanggal').textContent = tanggal;
@@ -965,7 +1108,7 @@
       setTimeout(() => { 
         jamEl.style.opacity = '1'; 
         jamEl.textContent = jam; 
-      }, 200);
+      }, 150);
     }
 
     function initializeParticles() {
