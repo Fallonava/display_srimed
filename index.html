@@ -313,15 +313,36 @@
       background: linear-gradient(135deg, #0288d1, #4caf50);
       padding: 20px 20px;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      animation: glowPulse 3s infinite ease-in-out;
+      box-shadow: 0 0 15px rgba(79, 195, 247, 0.4);
+      animation: glowBreath 5s ease-in-out infinite;
+      transition: all 0.3s ease;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
       display: inline-block;
     }
 
-    @keyframes glowPulse {
-      0%,100% { box-shadow: 0 4px 12px rgba(2, 136, 209, 0.4); }
-      50% { box-shadow: 0 4px 20px rgba(2, 136, 209, 0.8); }
+    .jam {
+      position: relative;
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    
+    .jam-utama {
+      font-size: 3.0rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    
+    .jam-detik {
+      font-size: 1.2rem;
+      opacity: 0.85;
+      align-self: flex-end;
+      margin-bottom: 6px;
+    }
+        
+    @keyframes glowBreath {
+      0%, 100% { box-shadow: 0 0 15px rgba(79, 195, 247, 0.3); transform: scale(1); }
+      50% { box-shadow: 0 0 35px rgba(79, 195, 247, 0.8); transform: scale(1.02); }
     }
 
     /* ===== FILTER CONTROLS ===== */
@@ -1100,15 +1121,15 @@
         hour: '2-digit', 
         minute: '2-digit'
       });
-      
+      const detik = now.toLocaleTimeString('id-ID', { 
+        second: '2-digit'
+      });
+    
       document.getElementById('tanggal').textContent = tanggal;
-      const jamEl = document.getElementById('jam');
-      jamEl.style.opacity = '0.3';
-      
-      setTimeout(() => { 
-        jamEl.style.opacity = '1'; 
-        jamEl.textContent = jam; 
-      }, 150);
+      document.getElementById('jam').innerHTML = `
+        <span class="jam-utama">${jam}</span>
+        <span class="jam-detik">${detik}</span>
+      `;
     }
 
     function initializeParticles() {
