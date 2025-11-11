@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INFO JADWAL PRAKTEK DOKTER SPESIALIS - RSU SIAGA MEDIKA PURBALINGGA</title>
+  <meta name="description" content="Jadwal praktek dokter spesialis RSU Siaga Medika Purbalingga - Informasi terbaru jam praktek dan status dokter">
+  <style>
+    :root {
+      --color-primary: #283593;
+      --color-primary-dark: #1a237e;
+      --color-secondary: #5c6bc0;
+      --color-accent: #ec407a;
+      --color-accent-light: #ff77a9;
+      --color-bg: #f5f5f5;
+      --color-bg-light: #ffffff;
+      --color-text: #1a237e;
+      --color-text-dark: #0d1440;
+      --color-text-light: #5c6bc0;
+      
+      /* Status Colors */
+      --color-status-buka: #4caf50;
+      --color-status-penuh: #ff9800;
+      --color-status-selesai: #2196f3;
+      --color-status-cuti: #9c27b0;
+      --color-status-tidak: #f44336;
+      --color-status-tidak-poli: #607d8b;
+      
+      --color-surface: #ffffff;
+      --color-border: #e0e0e0;
+      --color-shadow: rgba(26, 35, 126, 0.1);
+      
+      /* Spacing system */
+      --spacing-xs: 8px;
+      --spacing-sm: 12px;
+      --spacing-md: 16px;
+      --spacing-lg: 20px;
+      --spacing-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text-dark);
+      opacity: 0;
+      animation: gentleFadeIn 1.2s ease-out forwards;
+      line-height: 1.4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    @keyframes gentleFadeIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(10px);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== ENHANCED SKIP LINK ===== */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 10px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      border-radius: 12px;
+      z-index: 10000;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 
+        0 8px 25px rgba(40, 53, 147, 0.3),
+        0 2px 8px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+
+    .skip-link:focus {
+      top: 20px;
+      transform: translateY(0);
+      opacity: 1;
+      animation: skipLinkPulse 0.6s ease;
+    }
+
+    @keyframes skipLinkPulse {
+      0% {
+        transform: translateY(-20px) scale(0.9);
+        opacity: 0;
+      }
+      60% {
+        transform: translateY(5px) scale(1.05);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .skip-link:hover {
+      background: linear-gradient(135deg, var(--color-primary-dark), var(--color-accent));
+      transform: translateY(-2px);
+      box-shadow: 
+        0 12px 35px rgba(40, 53, 147, 0.4),
+        0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* ===== ENHANCED UPDATE NOTIFICATION ===== */
+    .update-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      padding: 16px 22px;
+      border-radius: 16px;
+      box-shadow: 
+        0 12px 35px rgba(76, 175, 80, 0.4),
+        0 4px 12px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      z-index: 10000;
+      font-weight: 700;
+      display: none;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transform: translateX(400px) scale(0.8);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      align-items: center;
+      gap: 12px;
+      max-width: 320px;
+    }
+
+    .update-notification.show {
+      display: flex;
+      transform: translateX(0) scale(1);
+      opacity: 1;
+      animation: notificationEntrance 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes notificationEntrance {
+      0% {
+        transform: translateX(400px) scale(0.8) rotate(-5deg);
+        opacity: 0;
+      }
+      70% {
+        transform: translateX(-15px) scale(1.05) rotate(2deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(0) scale(1) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    .update-notification.hiding {
+      transform: translateX(400px) scale(0.8) rotate(5deg);
+      opacity: 0;
+    }
+
+    .notification-icon {
+      font-size: 1.4rem;
+      animation: iconBounce 0.6s ease 0.2s both;
+    }
+
+    @keyframes iconBounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-8px);
+      }
+      60% {
+        transform: translateY(-4px);
+      }
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .notification-subtitle {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    .notification-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
+      border-radius: 0 0 16px 16px;
+      width: 100%;
+      transform-origin: left;
+      animation: progressShrink 3s linear forwards;
+    }
+
+    @keyframes progressShrink {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
+    }
+
+    /* ===== ENHANCED LOADING INDICATOR ===== */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: var(--spacing-xl);
+      color: var(--color-text);
+      font-weight: 600;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100;
+      background: var(--color-surface);
+      border-radius: 20px;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--color-border);
+      backdrop-filter: blur(20px);
+      min-width: 280px;
+    }
+
+    .loading-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(40, 53, 147, 0.1);
+      border-radius: 50%;
+      border-top: 3px solid var(--color-primary);
+      animation: gentleSpin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+      position: relative;
+    }
+
+    .loading-spinner::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top: 3px solid var(--color-accent);
+      animation: gentleSpin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite 0.2s;
+    }
+
+    @keyframes gentleSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .loading-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      animation: loadingDot 1.4s ease-in-out infinite both;
+    }
+
+    .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+    .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+    .loading-dot:nth-child(3) { animation-delay: 0s; }
+
+    @keyframes loadingDot {
+      0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+    }
+
+    .loading-message {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      text-align: center;
+    }
+
+    .loading-submessage {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    /* ===== AESTHETIC FOOTER ===== */
+    footer {
+      background: linear-gradient(135deg, 
+        rgba(26, 35, 126, 0.95) 0%, 
+        rgba(40, 53, 147, 0.9) 25%, 
+        rgba(92, 107, 192, 0.85) 50%, 
+        rgba(236, 64, 122, 0.8) 75%, 
+        rgba(255, 119, 169, 0.75) 100%);
+      color: white;
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+      animation: gentleShift 8s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes gentleShift {
+      0%, 100% { 
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% { 
+        transform: scale(1.05);
+        opacity: 1;
+      }
+    }
+
+    .footer-container {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== ENHANCED CUTI FOOTER SECTION ===== */
+    .cuti-footer-section {
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.15) 0%, 
+        rgba(255, 255, 255, 0.08) 100%);
+      backdrop-filter: blur(20px);
+      padding: 12px var(--spacing-md);
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      min-height: 70px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cuti-footer-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.6), 
+        transparent);
+    }
+
+    .cuti-footer-section::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    }
+
+    .cuti-footer-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      margin-bottom: 8px;
+    }
+
+    .cuti-footer-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .cuti-footer-icon {
+      font-size: 1.2rem;
+      animation: gentleSway 3s ease-in-out infinite;
+    }
+
+    @keyframes gentleSway {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(5deg) scale(1.1); }
+      75% { transform: rotate(-5deg) scale(1.1); }
+    }
+
+    .cuti-scroll-container {
+      overflow: hidden;
+      position: relative;
+      min-height: 55px;
+      height: 55px;
+    }
+
+    .cuti-scroll-content {
+      display: flex;
+      gap: 15px;
+      animation: scrollCuti 45s linear infinite;
+      padding: 0 var(--spacing-md);
+    }
+
+    .cuti-scroll-container:hover .cuti-scroll-content {
+      animation-play-state: paused;
+    }
+
+    @keyframes scrollCuti {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== ENHANCED CUTI ITEMS ===== */
+    .cuti-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.25) 0%, 
+        rgba(255, 255, 255, 0.15) 100%);
+      padding: 8px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(15px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      flex-shrink: 0;
+      min-width: 260px;
+      height: 52px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .cuti-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        transparent);
+      transition: left 0.6s ease;
+    }
+
+    .cuti-item:hover {
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.35) 0%, 
+        rgba(255, 255, 255, 0.2) 100%);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 
+        0 12px 25px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .cuti-item:hover::before {
+      left: 100%;
+    }
+
+    .cuti-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffeb3b, #ffc107);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary-dark);
+      font-size: 0.8rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+    }
+
+    .cuti-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cuti-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    .cuti-dokter-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .cuti-separator {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.7rem;
+    }
+
+    .cuti-spesialis {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.95);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .cuti-date-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1;
+    }
+
+    .cuti-date-icon {
+      font-size: 0.7rem;
+      opacity: 0.9;
+    }
+
+    .cuti-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      white-space: nowrap;
+      flex-shrink: 0;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cuti Status Badge Colors */
+    .cuti-badge.akan-cuti {
+      background: linear-gradient(135deg, #2196f3, #1976d2);
+      animation: gentlePulse 2s ease-in-out infinite;
+    }
+
+    .cuti-badge.sedang-cuti {
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+      animation: gentleGlow 2s ease-in-out infinite;
+    }
+
+    .cuti-badge.selesai-cuti {
+      background: linear-gradient(135deg, #78909c, #546e7a);
+    }
+
+    @keyframes gentlePulse {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.5);
+      }
+      50% { 
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(33, 150, 243, 0.7);
+      }
+    }
+
+    @keyframes gentleGlow {
+      0%, 100% { 
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.5);
+      }
+      50% { 
+        box-shadow: 0 6px 20px rgba(255, 152, 0, 0.7), 
+                   0 0 15px rgba(255, 152, 0, 0.4);
+      }
+    }
+
+    .cuti-empty {
+      text-align: center;
+      padding: var(--spacing-md);
+      color: rgba(255, 255, 255, 0.8);
+      font-style: italic;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .cuti-empty::before {
+      content: '🎉';
+      font-size: 1.1rem;
+    }
+
+    /* ===== SYNC STATUS ===== */
+    .sync-status {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      z-index: 1000;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .sync-status::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: block;
+      box-shadow: 0 0 15px currentColor;
+    }
+
+    .sync-status.syncing::before {
+      background: #ff9800;
+      animation: gentlePulseSync 1.5s ease-in-out infinite;
+    }
+
+    .sync-status.up-to-date::before {
+      background: #4CAF50;
+      animation: gentleGlowSync 2s ease-in-out infinite;
+    }
+
+    @keyframes gentlePulseSync {
+      0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% { 
+        transform: scale(1.3);
+        opacity: 0.7;
+      }
+    }
+
+    @keyframes gentleGlowSync {
+      0%, 100% { 
+        box-shadow: 0 0 15px #4CAF50;
+      }
+      50% { 
+        box-shadow: 0 0 25px #4CAF50, 0 0 35px rgba(76, 175, 80, 0.3);
+      }
+    }
+
+    /* ===== HOSPITAL LOGO ===== */
+    .hospital-logo {
+      position: absolute;
+      top: var(--spacing-md);
+      left: var(--spacing-lg);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      animation: slideInLeft 0.8s ease-out;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .logo-container {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ffffff, #e3f2fd);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 
+        0 8px 25px rgba(26, 35, 126, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    }
+
+    .logo-container:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 
+        0 12px 35px rgba(26, 35, 126, 0.25),
+        0 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .logo-text {
+      background: linear-gradient(135deg, #ffffff, #e8eaf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== HEADER STYLES ===== */
+    header {
+      position: relative;
+      text-align: center;
+      padding: var(--spacing-md) var(--spacing-lg);
+      color: white;
+      font-weight: 700;
+      text-transform: uppercase;
+      overflow: hidden;
+      z-index: 1;
+      flex-shrink: 0;
+      height: 140px;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+      background-size: 200% 200%;
+      animation: gentleGradient 8s ease infinite;
+      z-index: -2;
+    }
+
+    @keyframes gentleGradient {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 3.0rem;
+      line-height: 0.8;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      color: white;
+      padding-top: 15px;
+      animation: textGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes textGlow {
+      from {
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+      to {
+        text-shadow: 
+          0 2px 8px rgba(0, 0, 0, 0.3),
+          0 0 20px rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    /* ===== DATE STYLES ===== */
+    .tanggal {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      letter-spacing: 0.8px;
+      margin: 10px auto;
+      display: inline-block;
+      animation: floatIn 1s ease-out;
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* ===== DATETIME CORNER ===== */
+    .datetime-corner {
+      position: absolute;
+      top: var(--spacing-md);
+      right: var(--spacing-lg);
+      text-align: right;
+      z-index: 10;
+      animation: slideInRight 0.8s ease-out;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .datetime-corner .jam {
+      position: relative;
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 6px;
+      padding: 20px 28px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--color-primary-dark), var(--color-secondary), var(--color-accent));
+      background-size: 200% 200%;
+      animation: gentleGradient 6s ease infinite;
+      box-shadow: 
+        0 8px 25px rgba(92, 107, 192, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      color: white;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .datetime-corner .jam:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 12px 35px rgba(92, 107, 192, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    .jam-utama {
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    
+    .jam-detik {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 8px;
+      color: #e8eaf6;
+      animation: gentleBlink 2s ease-in-out infinite;
+    }
+    
+    @keyframes gentleBlink {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      padding: 0 var(--spacing-md) var(--spacing-md);
+      gap: var(--spacing-md);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      box-shadow: 
+        0 8px 25px var(--color-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      padding: var(--spacing-sm) 0;
+      flex: 1;
+      min-width: 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section h2 {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      padding: var(--spacing-sm) 0;
+      margin: 0 var(--spacing-sm) var(--spacing-sm);
+      border-radius: 12px;
+      font-size: 1.4rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      flex-shrink: 0;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .table-container {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    th {
+      padding: var(--spacing-sm) var(--spacing-xs);
+      color: var(--color-text-dark);
+      font-weight: 700;
+      border-bottom: 3px solid var(--color-secondary);
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      background: linear-gradient(to bottom, #f8fdff, #e3f2fd);
+    }
+
+    td {
+      padding: var(--spacing-xs) var(--spacing-xs);
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-dark);
+      transition: all 0.3s ease;
+      font-size: 1.7rem;
+      font-weight: 600;
+    }
+
+    tr {
+      transition: all 0.3s ease;
+    }
+
+    tr:hover {
+      transform: translateX(4px);
+      background: linear-gradient(90deg, rgba(227, 242, 253, 0.4), transparent);
+    }
+
+    /* ===== STATUS STYLES ===== */
+    .status {
+      display: inline-block;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: 20px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      min-width: 85px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .status:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .status.BUKA { 
+      background: linear-gradient(135deg, var(--color-status-buka), #43a047);
+    }
+
+    .status.PENUH { 
+      background: linear-gradient(135deg, var(--color-status-penuh), #fb8c00);
+    }
+
+    .status.SELESAI { 
+      background: linear-gradient(135deg, var(--color-status-selesai), #1976d2);
+    }
+
+    .status.CUTI { 
+      background: linear-gradient(135deg, var(--color-status-cuti), #7b1fa2);
+    }
+
+    .status.TIDAK { 
+      background: linear-gradient(135deg, var(--color-status-tidak), #e53935);
+    }
+
+    .status.TIDAK-ADA-POLI { 
+      background: linear-gradient(135deg, var(--color-status-tidak-poli), #455a64);
+    }
+
+    /* ===== UTILITY STYLES ===== */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .offline-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #f44336;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      z-index: 10000;
+      font-weight: bold;
+      display: none;
+    }
+
+    .online-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #4caf50;
+      color: white;
+      padding: 8px;
+      text-align: center;
+      z-index: 10000;
+      font-weight: bold;
+      display: none;
+    }
+
+    .error-message {
+      text-align: center;
+      padding: var(--spacing-xl) var(--spacing-lg);
+      color: var(--color-status-tidak);
+      font-weight: 600;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+    }
+
+    .error-message button {
+      background: var(--color-secondary);
+      border: none;
+      border-radius: 8px;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      margin-top: var(--spacing-sm);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .error-message button:hover {
+      background: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ===== RESPONSIVE STYLES ===== */
+    @media screen and (max-width: 1024px) {
+      .cuti-item {
+        min-width: 220px;
+        height: 48px;
+        padding: 6px 12px;
+      }
+      
+      .cuti-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+      }
+      
+      .cuti-dokter-name {
+        font-size: 0.8rem;
+      }
+      
+      .cuti-spesialis {
+        font-size: 0.7rem;
+      }
+      
+      .cuti-footer-title {
+        font-size: 0.9rem;
+      }
+
+      .hospital-logo {
+        top: var(--spacing-sm);
+        left: var(--spacing-md);
+      }
+      
+      .logo-container {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      :root {
+        font-size: 12px;
+      }
+      
+      header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .datetime-corner {
+        top: var(--spacing-sm);
+        right: var(--spacing-md);
+      }
+      
+      .content-wrapper {
+        flex-direction: column;
+      }
+      
+      .cuti-item {
+        min-width: 200px;
+        height: 45px;
+        padding: 5px 10px;
+      }
+      
+      .cuti-dokter-name {
+        font-size: 0.75rem;
+      }
+      
+      .hospital-logo {
+        top: var(--spacing-xs);
+        left: var(--spacing-sm);
+      }
+      
+      .logo-container {
+        width: 40px;
+        height: 40px;
+      }
+
+      .update-notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+      }
+
+      th, td {
+        font-size: 1.3rem;
+      }
+      
+      .status {
+        font-size: 1rem;
+        min-width: 70px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .cuti-item {
+        min-width: 180px;
+        height: 42px;
+        padding: 4px 8px;
+      }
+      
+      .cuti-dokter-name {
+        font-size: 0.7rem;
+      }
+      
+      .cuti-spesialis {
+        font-size: 0.65rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Enhanced Skip Link -->
+  <a href="#main-content" class="skip-link" id="skipLink">
+    🚀 Langsung ke Konten Utama
+  </a>
+
+  <!-- Offline/Online Banners -->
+  <div class="offline-banner" id="offlineBanner">
+    ⚠️ Anda sedang offline. Menampilkan data cache terakhir.
+  </div>
+  <div class="online-banner" id="onlineBanner">
+    ✅ Koneksi internet tersedia. Memperbarui data...
+  </div>
+
+  <!-- Enhanced Update Notification -->
+  <div class="update-notification" id="updateNotification">
+    <div class="notification-icon">🎯</div>
+    <div class="notification-content">
+      <div class="notification-title">Data Jadwal Diperbarui!</div>
+      <div class="notification-subtitle">Informasi terbaru sudah tersedia</div>
+    </div>
+    <div class="notification-progress"></div>
+  </div>
+
+  <!-- Sync Status -->
+  <div class="sync-status up-to-date" id="syncStatus">
+    Data terkini
+  </div>
+
+  <!-- Enhanced Loading Indicator -->
+  <div class="loading" id="loadingIndicator">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-message" id="loadingMessage">Memuat Jadwal Dokter</div>
+      <div class="loading-submessage" id="loadingSubmessage">Mohon tunggu sebentar...</div>
+    </div>
+  </div>
+
+  <!-- Live region for announcements -->
+  <div aria-live="polite" aria-atomic="true" class="sr-only" id="liveRegion">
+    Data jadwal dokter telah diperbarui
+  </div>
+
+  <!-- Logo Rumah Sakit -->
+  <div class="hospital-logo">
+    <div class="logo-container">
+      <div class="logo-icon">🏥</div>
+    </div>
+    <div class="logo-text">GENERAL HOSPITAL</div>
+  </div>
+
+  <header>
+    <h1>INFORMASI PRAKTEK DOKTER SPESIALIS</h1>
+    <h2 class="tanggal" id="tanggal"></h2>
+    <div class="datetime-corner">
+      <div class="jam" id="jam"></div>
+    </div>
+  </header>
+
+  <div class="content-wrapper" id="main-content" tabindex="-1">
+    <div class="section" id="bedahSection">
+      <h2>BEDAH</h2>
+      <div class="table-container">
+        <table id="tableBedah">
+          <thead>
+            <tr>
+              <th>Spesialis</th>
+              <th>Dokter</th>
+              <th>Status</th>
+              <th>Jam</th>
+            </tr>
+          </thead>
+          <tbody id="bedahBody">
+            <!-- Data akan dimuat di sini -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="nonBedahSection">
+      <h2>NON BEDAH</h2>
+      <div class="table-container">
+        <table id="tableNonBedah">
+          <thead>
+            <tr>
+              <th>Spesialis</th>
+              <th>Dokter</th>
+              <th>Status</th>
+              <th>Jam</th>
+            </tr>
+          </thead>
+          <tbody id="nonBedahBody">
+            <!-- Data akan dimuat di sini -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Footer -->
+  <footer>
+    <div class="footer-container">
+      <!-- Enhanced Cuti Doctors Section -->
+      <div class="cuti-footer-section">
+        <div class="cuti-footer-header">
+          <div class="cuti-footer-title">
+            <span class="cuti-footer-icon">🏖️</span>
+            <span>Informasi Cuti Dokter</span>
+          </div>
+        </div>
+        <div class="cuti-scroll-container">
+          <div class="cuti-scroll-content" id="cutiScrollContent">
+            <!-- Cuti doctors will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ==================== CONFIGURATION ====================
+    const MAIN_SHEET_URL = "https://script.google.com/macros/s/AKfycbyVnM9JhKx8xj2EZhETj1BdSCnmJxtNBV4eFmohKE0denRS4VEA3JqPI-RVsQFg7ZuEtw/exec";
+    const FOOTER_SHEET_URL = "https://script.google.com/macros/s/AKfycbxYREx42acZcDyDe8DF75UJlB0hroAoQ4QH_gpd71RgGtbI889yAAtzegrjgwvfLkFY4Q/exec";
+    
+    const REFRESH_INTERVAL = 30000; // 1/2 menit
+    const CACHE_DURATION = 600000; // 10 menit
+    const FETCH_TIMEOUT = 15000; // 15 detik
+
+    // ==================== GLOBAL STATE ====================
+    let allData = [];
+    let cutiData = [];
+    let dataInterval;
+    let loadingMessageInterval;
+
+    // ==================== ENHANCED SKIP LINK ======
+    function initializeSkipLink() {
+      const skipLink = document.getElementById('skipLink');
+      const mainContent = document.getElementById('main-content');
+      
+      skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        mainContent.style.outline = '2px solid var(--color-accent)';
+        mainContent.style.outlineOffset = '2px';
+        
+        mainContent.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+        
+        mainContent.focus();
+        
+        setTimeout(() => {
+          mainContent.style.outline = 'none';
+        }, 3000);
+        
+        announceToScreenReader('Loncat ke konten utama. Sekarang di bagian informasi jadwal dokter.');
+      });
+    }
+
+    // ==================== ENHANCED UPDATE NOTIFICATION ======
+    function showEnhancedUpdateNotification() {
+      const notification = document.getElementById('updateNotification');
+      
+      // Reset animation
+      notification.classList.remove('show', 'hiding');
+      void notification.offsetWidth; // Trigger reflow
+      
+      // Show notification with enhanced animation
+      notification.classList.add('show');
+      
+      // Announce to screen reader immediately
+      announceToScreenReader('Data jadwal dokter telah diperbarui dengan informasi terbaru');
+      
+      // Auto hide after 4 seconds with smooth exit
+      setTimeout(() => {
+        notification.classList.add('hiding');
+        setTimeout(() => {
+          notification.classList.remove('show', 'hiding');
+        }, 600);
+      }, 4000);
+    }
+
+    // ==================== ENHANCED LOADING SYSTEM ======
+    function showEnhancedLoading(message = 'Memuat Jadwal Dokter', submessage = 'Mohon tunggu sebentar...') {
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      const loadingMessage = document.getElementById('loadingMessage');
+      const loadingSubmessage = document.getElementById('loadingSubmessage');
+      
+      loadingMessage.textContent = message;
+      loadingSubmessage.textContent = submessage;
+      loadingIndicator.style.display = 'block';
+      
+      // Clear existing interval
+      if (loadingMessageInterval) {
+        clearInterval(loadingMessageInterval);
+      }
+      
+      // Rotate loading messages
+      const messages = [
+        { main: 'Memuat Jadwal Dokter', sub: 'Mengambil data terbaru...' },
+        { main: 'Memperbarui Informasi', sub: 'Menyinkronkan dengan server...' },
+        { main: 'Menyiapkan Tampilan', sub: 'Hampir selesai...' }
+      ];
+      
+      let messageIndex = 0;
+      loadingMessageInterval = setInterval(() => {
+        if (loadingIndicator.style.display === 'none') {
+          clearInterval(loadingMessageInterval);
+          return;
+        }
+        
+        messageIndex = (messageIndex + 1) % messages.length;
+        loadingMessage.textContent = messages[messageIndex].main;
+        loadingSubmessage.textContent = messages[messageIndex].sub;
+      }, 3000);
+    }
+
+    function hideEnhancedLoading() {
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      loadingIndicator.style.display = 'none';
+      
+      if (loadingMessageInterval) {
+        clearInterval(loadingMessageInterval);
+        loadingMessageInterval = null;
+      }
+    }
+
+    // ==================== ENHANCED CUTI STATUS SYSTEM ======
+    function parseCutiStatus(dateText) {
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      
+      // Patterns untuk parsing tanggal cuti
+      const patterns = [
+        /(\d{1,2})\s*[-–]\s*(\d{1,2})\s*([A-Za-z]+)/i,
+        /(\d{1,2})\s*[-–]\s*(\d{1,2})\s*([A-Za-z]+)\s*(\d{4})?/i,
+        /([A-Za-z]+)\s*(\d{1,2})\s*[-–]\s*(\d{1,2})/i,
+        /(\d{1,2})\/(\d{1,2})\s*[-–]\s*(\d{1,2})\/(\d{1,2})/i,
+      ];
+
+      for (let pattern of patterns) {
+        const match = dateText.match(pattern);
+        if (match) {
+          let startDate, endDate;
+          
+          if (pattern === patterns[0] || pattern === patterns[1]) {
+            const startDay = parseInt(match[1]);
+            const endDay = parseInt(match[2]);
+            const monthName = match[3];
+            const year = match[4] ? parseInt(match[4]) : currentYear;
+            
+            const month = getMonthNumber(monthName);
+            if (month !== -1) {
+              startDate = new Date(year, month, startDay);
+              endDate = new Date(year, month, endDay);
+            }
+          }
+
+          if (startDate && endDate) {
+            if (today < startDate) {
+              return { 
+                badgeClass: 'akan-cuti', 
+                statusText: 'AKAN CUTI',
+                tooltip: `Mulai: ${formatDate(startDate)}`
+              };
+            } else if (today > endDate) {
+              return { 
+                badgeClass: 'selesai-cuti', 
+                statusText: 'SELESAI',
+                tooltip: `Berakhir: ${formatDate(endDate)}`
+              };
+            } else {
+              return { 
+                badgeClass: 'sedang-cuti', 
+                statusText: 'SEDANG CUTI',
+                tooltip: `Berakhir: ${formatDate(endDate)}`
+              };
+            }
+          }
+        }
+      }
+
+      return { 
+        badgeClass: 'sedang-cuti', 
+        statusText: 'CUTI',
+        tooltip: dateText
+      };
+    }
+
+    function getMonthNumber(monthName) {
+      const months = {
+        'januari': 0, 'februari': 1, 'maret': 2, 'april': 3, 'mei': 4, 'juni': 5,
+        'juli': 6, 'agustus': 7, 'september': 8, 'oktober': 9, 'november': 10, 'desember': 11,
+        'january': 0, 'february': 1, 'march': 2, 'april': 3, 'may': 4, 'june': 5,
+        'july': 6, 'august': 7, 'september': 8, 'october': 9, 'november': 10, 'december': 11
+      };
+      return months[monthName.toLowerCase()] || -1;
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    // ==================== ENHANCED CUTI DISPLAY ======
+    function displayCutiDoctors(data) {
+      const cutiContainer = document.getElementById('cutiScrollContent');
+      
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        cutiContainer.innerHTML = '<div class="cuti-empty">Semua dokter sedang bertugas</div>';
+        return;
+      }
+
+      let cutiHTML = '';
+      let validCutiCount = 0;
+      
+      data.forEach((doctor, index) => {
+        try {
+          const namaDokter = doctor.Dokter || doctor.Nama || doctor['Nama Dokter'] || `Dokter ${index + 1}`;
+          const spesialis = doctor.Spesialis || doctor.Poli || doctor['Spesialisasi'] || 'Spesialis';
+          const tanggalCuti = doctor.Tanggal || doctor.Period || doctor.Jam || doctor['Periode Cuti'] || 'Cuti';
+          
+          if (!namaDokter || namaDokter === `Dokter ${index + 1}`) {
+            return;
+          }
+          
+          const initials = getInitials(namaDokter);
+          const statusInfo = parseCutiStatus(tanggalCuti);
+          
+          cutiHTML += `
+            <div class="cuti-item" 
+                 onclick="showCutiDetail(
+                   '${escapeHtml(namaDokter)}', 
+                   '${escapeHtml(spesialis)}', 
+                   '${escapeHtml(tanggalCuti)}',
+                   '${statusInfo.badgeClass}',
+                   '${statusInfo.statusText}'
+                 )"
+                 title="${statusInfo.tooltip || 'Informasi cuti dokter'}">
+              <div class="cuti-avatar" title="${escapeHtml(namaDokter)}">${initials}</div>
+              <div class="cuti-info">
+                <div class="cuti-name-row">
+                  <span class="cuti-dokter-name">${escapeHtml(namaDokter)}</span>
+                  <span class="cuti-separator">-</span>
+                  <span class="cuti-spesialis">${escapeHtml(spesialis)}</span>
+                </div>
+                <div class="cuti-date-row">
+                  <span class="cuti-date-icon">📅</span>
+                  <span>${escapeHtml(tanggalCuti)}</span>
+                </div>
+              </div>
+              <div class="cuti-badge ${statusInfo.badgeClass}">${statusInfo.statusText}</div>
+            </div>
+          `;
+          
+          validCutiCount++;
+          
+        } catch (error) {
+          console.error('Error processing cuti doctor:', error, doctor);
+        }
+      });
+
+      if (validCutiCount === 0) {
+        cutiContainer.innerHTML = '<div class="cuti-empty">Semua dokter sedang bertugas</div>';
+        return;
+      }
+
+      cutiContainer.innerHTML = cutiHTML;
+    }
+
+    // ==================== DATA SYNC SYSTEM ======
+    class OptimizedDataSync {
+      constructor() {
+        this.lastDataHash = null;
+        this.isChecking = false;
+      }
+
+      generateSimpleHash(data) {
+        if (!data || !Array.isArray(data)) return 'invalid';
+        
+        const dataString = data.map(doctor => 
+          `${doctor.Dokter}|${doctor.Spesialis}|${doctor.Status}|${doctor.Jam}|${doctor.Jenis}`
+        ).join('||');
+        
+        let hash = 0;
+        for (let i = 0; i < dataString.length; i++) {
+          const char = dataString.charCodeAt(i);
+          hash = ((hash << 5) - hash) + char;
+          hash = hash & hash;
+        }
+        return hash.toString();
+      }
+
+      async checkForUpdates() {
+        if (this.isChecking || document.hidden) return false;
+
+        this.isChecking = true;
+
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+          const response = await fetch(MAIN_SHEET_URL, {
+            method: 'GET',
+            signal: controller.signal
+          });
+
+          clearTimeout(timeoutId);
+
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+          const data = await response.json();
+          if (!this.validateData(data)) throw new Error('Invalid data');
+
+          const newHash = this.generateSimpleHash(data);
+          const oldHash = this.lastDataHash;
+
+          if (newHash === oldHash && oldHash !== null) {
+            return false;
+          }
+
+          this.lastDataHash = newHash;
+          return { data, hash: newHash, type: oldHash ? 'update' : 'initial' };
+
+        } catch (error) {
+          console.warn('Update check failed:', error.message);
+          return false;
+        } finally {
+          this.isChecking = false;
+        }
+      }
+
+      validateData(data) {
+        return Array.isArray(data) && data.every(item => 
+          item && typeof item === 'object' &&
+          'Spesialis' in item && 'Dokter' in item && 
+          'Status' in item && 'Jenis' in item
+        );
+      }
+    }
+
+    // ==================== RESOURCE MANAGER ======
+    class ResourceManager {
+      constructor() {
+        this.intervals = [];
+        this.timeouts = [];
+      }
+
+      setInterval(callback, delay) {
+        const id = setInterval(callback, delay);
+        this.intervals.push(id);
+        return id;
+      }
+
+      setTimeout(callback, delay) {
+        const id = setTimeout(callback, delay);
+        this.timeouts.push(id);
+        return id;
+      }
+
+      cleanup() {
+        this.intervals.forEach(clearInterval);
+        this.timeouts.forEach(clearTimeout);
+        this.intervals = [];
+        this.timeouts = [];
+      }
+    }
+
+    // ==================== INITIALIZATION ======
+    const resources = new ResourceManager();
+    const dataSync = new OptimizedDataSync();
+    
+    function initializeApp() {
+      initializeSkipLink();
+      initializeOfflineDetection();
+      
+      updateDateTime();
+      showSkeletonLoading();
+      loadInitialData();
+      
+      resources.setInterval(updateDateTime, 1000);
+      startOptimizedPolling();
+      
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('online', handleOnlineStatus);
+      window.addEventListener('offline', handleOnlineStatus);
+      window.addEventListener('beforeunload', cleanupApp);
+    }
+
+    function cleanupApp() {
+      resources.cleanup();
+      if (loadingMessageInterval) {
+        clearInterval(loadingMessageInterval);
+      }
+    }
+
+    // ==================== CORE FUNCTIONALITY ======
+    function startOptimizedPolling() {
+      dataInterval = resources.setInterval(async () => {
+        await checkForDataUpdates();
+      }, REFRESH_INTERVAL);
+    }
+
+    async function checkForDataUpdates() {
+      updateSyncStatus('syncing');
+      
+      const updateResult = await dataSync.checkForUpdates();
+      
+      if (updateResult) {
+        await processDataUpdate(updateResult.data);
+        showEnhancedUpdateNotification();
+        updateSyncStatus('up-to-date');
+        cacheData({ mainData: updateResult.data, cutiData });
+      } else {
+        updateSyncStatus('up-to-date');
+      }
+    }
+
+    async function processDataUpdate(newData) {
+      allData = newData;
+      showData(newData);
+      announceToScreenReader('Data jadwal dokter telah diperbarui dengan informasi terbaru');
+    }
+
+    function updateSyncStatus(status) {
+      const syncStatus = document.getElementById('syncStatus');
+      syncStatus.className = `sync-status ${status}`;
+      syncStatus.textContent = status === 'syncing' ? 'Memeriksa update...' : 'Data terkini';
+    }
+
+    async function loadInitialData() {
+      const cached = getCachedData();
+      if (cached) {
+        showData(cached.mainData);
+        displayCutiDoctors(cached.cutiData);
+        dataSync.lastDataHash = dataSync.generateSimpleHash(cached.mainData);
+        hideEnhancedLoading();
+        setTimeout(() => loadCutiData(), 1000);
+        return;
+      }
+
+      try {
+        showEnhancedLoading();
+        
+        const [mainData, footerData] = await Promise.all([
+          fetchWithTimeout(MAIN_SHEET_URL),
+          fetchWithTimeout(FOOTER_SHEET_URL)
+        ]);
+        
+        if (!dataSync.validateData(mainData)) {
+          throw new Error('Format data tidak valid');
+        }
+        
+        allData = mainData;
+        cutiData = footerData;
+        dataSync.lastDataHash = dataSync.generateSimpleHash(mainData);
+        
+        cacheData({ mainData, cutiData });
+        showData(mainData);
+        displayCutiDoctors(footerData);
+        hideEnhancedLoading();
+        
+        announceToScreenReader('Data jadwal dokter telah dimuat');
+        
+      } catch (err) {
+        console.error("Gagal memuat data:", err);
+        showErrorState('Gagal memuat data jadwal. Memuat data cache jika tersedia.');
+        hideEnhancedLoading();
+      }
+    }
+
+    async function fetchWithTimeout(url) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+      
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
+      }
+    }
+
+    async function loadCutiData() {
+      try {
+        const footerData = await fetchWithTimeout(FOOTER_SHEET_URL);
+        cutiData = footerData;
+        displayCutiDoctors(footerData);
+        
+        const cached = getCachedData() || {};
+        cacheData({ mainData: cached.mainData || allData, cutiData: footerData });
+      } catch (err) {
+        console.warn('Gagal memuat data cuti:', err.message);
+      }
+    }
+
+    function cacheData(data) {
+      try {
+        const cache = {
+          mainData: data.mainData,
+          cutiData: data.cutiData,
+          timestamp: Date.now()
+        };
+        localStorage.setItem('doctorSchedule', JSON.stringify(cache));
+      } catch (e) {
+        console.warn('Gagal menyimpan cache:', e);
+      }
+    }
+
+    function getCachedData() {
+      try {
+        const cached = localStorage.getItem('doctorSchedule');
+        if (!cached) return null;
+        
+        const { mainData, cutiData, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          return { mainData, cutiData };
+        }
+      } catch (e) {
+        console.warn('Gagal memuat cache:', e);
+      }
+      return null;
+    }
+
+    // ==================== UTILITY FUNCTIONS ======
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function getInitials(name) {
+      return name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().substring(0, 2);
+    }
+
+    function announceToScreenReader(message) {
+      const liveRegion = document.getElementById('liveRegion');
+      liveRegion.textContent = message;
+    }
+
+    function updateDateTime() {
+      const now = new Date();
+      const tanggal = document.getElementById('tanggal');
+      const jam = document.getElementById('jam');
+      
+      tanggal.textContent = now.toLocaleDateString('id-ID', { 
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+      });
+      
+      const jamStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      const detikStr = now.toLocaleTimeString('id-ID', { second: '2-digit' });
+    
+      jam.innerHTML = `
+        <span class="jam-utama">${jamStr}</span>
+        <span class="jam-detik">${detikStr}</span>
+      `;
+    }
+
+    function showSkeletonLoading() {
+      const skeletonRow = `
+        <tr class="skeleton-row">
+          <td><div class="skeleton"></div></td>
+          <td><div class="skeleton"></div></td>
+          <td><div class="skeleton" style="width: 85px; height: 28px; margin: 0 auto;"></div></td>
+          <td><div class="skeleton"></div></td>
+        </tr>
+      `;
+      
+      document.getElementById('bedahBody').innerHTML = skeletonRow.repeat(3);
+      document.getElementById('nonBedahBody').innerHTML = skeletonRow.repeat(5);
+      
+      document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.add('show');
+      });
+    }
+
+    function showData(data) {
+      const tables = {
+        bedah: document.getElementById("bedahBody"),
+        nonBedah: document.getElementById("nonBedahBody")
+      };
+      
+      tables.bedah.innerHTML = "";
+      tables.nonBedah.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        showEmptyState();
+        return;
+      }
+
+      data.forEach(item => {
+        let statusClass = 'TIDAK';
+        if (item.Status) {
+          const status = item.Status.toUpperCase();
+          if (status.includes('BUKA')) statusClass = 'BUKA';
+          else if (status.includes('PENUH')) statusClass = 'PENUH';
+          else if (status.includes('SELESAI')) statusClass = 'SELESAI';
+          else if (status.includes('CUTI')) statusClass = 'CUTI';
+          else if (status.includes('TIDAK ADA POLI') || status.includes('TIDAK-ADA-POLI')) statusClass = 'TIDAK-ADA-POLI';
+          else if (status.includes('TIDAK')) statusClass = 'TIDAK';
+        }
+        
+        const row = `
+          <tr>
+            <td>${escapeHtml(item.Spesialis || '-')}</td>
+            <td>${escapeHtml(item.Dokter || '-')}</td>
+            <td><span class="status ${statusClass}">${escapeHtml(item.Status || 'TIDAK')}</span></td>
+            <td>${escapeHtml(item.Jam || '-')}</td>
+          </tr>
+        `;
+        
+        const targetTable = item.Jenis === "Bedah" ? tables.bedah : tables.nonBedah;
+        targetTable.innerHTML += row;
+      });
+
+      document.querySelectorAll('.section').forEach((sec, index) => {
+        sec.classList.remove('show');
+        setTimeout(() => sec.classList.add('show'), index * 200);
+      });
+    }
+
+    function showErrorState(message) {
+      const errorHTML = `
+        <tr>
+          <td colspan="4" class="error-message">
+            ${message}<br>
+            <button onclick="loadInitialData()">Coba Lagi</button>
+          </td>
+        </tr>
+      `;
+      
+      document.querySelectorAll('tbody').forEach(tbody => {
+        if (tbody.children.length === 0) {
+          tbody.innerHTML = errorHTML;
+        }
+      });
+    }
+
+    function showEmptyState() {
+      const emptyHTML = `
+        <tr>
+          <td colspan="4" class="error-message">
+            📝 Tidak ada data jadwal dokter yang tersedia.
+          </td>
+        </tr>
+      `;
+      
+      document.querySelectorAll('tbody').forEach(tbody => {
+        tbody.innerHTML = emptyHTML;
+      });
+    }
+
+    function initializeOfflineDetection() {
+      function updateOnlineStatus() {
+        const offlineBanner = document.getElementById('offlineBanner');
+        const onlineBanner = document.getElementById('onlineBanner');
+        
+        if (navigator.onLine) {
+          offlineBanner.style.display = 'none';
+          onlineBanner.style.display = 'block';
+          setTimeout(() => {
+            onlineBanner.style.display = 'none';
+          }, 3000);
+        } else {
+          offlineBanner.style.display = 'block';
+          onlineBanner.style.display = 'none';
+        }
+      }
+      updateOnlineStatus();
+    }
+
+    function handleVisibilityChange() {
+      if (document.hidden) {
+        clearInterval(dataInterval);
+        dataInterval = null;
+      } else {
+        startOptimizedPolling();
+        setTimeout(() => checkForDataUpdates(), 1000);
+      }
+    }
+
+    function handleOnlineStatus() {
+      if (navigator.onLine) {
+        setTimeout(() => checkForDataUpdates(), 2000);
+      }
+    }
+
+    // ==================== GLOBAL FUNCTIONS ======
+    window.showCutiDetail = function(nama, spesialis, tanggal, badgeClass, statusText) {
+      const statusMessages = {
+        'akan-cuti': 'akan cuti',
+        'sedang-cuti': 'sedang cuti',
+        'selesai-cuti': 'telah selesai cuti'
+      };
+      
+      alert(`📋 Detail Cuti Dokter\n\n👨‍⚕️ Dr. ${nama}\n🎯 ${spesialis}\n📅 ${tanggal}\n📊 Status: ${statusMessages[badgeClass] || 'cuti'}`);
+    };
+
+    window.loadInitialData = loadInitialData;
+
+    // ==================== INITIALIZE APP ======
+    document.addEventListener('DOMContentLoaded', initializeApp);
+  </script>
+</body>
+</html>
