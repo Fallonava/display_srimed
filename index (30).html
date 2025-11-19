@@ -4658,6 +4658,129 @@ window.TVSystems = {
 console.log('📺 TV Management Systems Loaded Successfully');
 </script>
 
-<script src="tv-mode-fix.js"></script>
+  
+  <script>
+// ==================== UNIVERSAL FLOATING FOOTER AUTO-TOGGLE ====================
+console.log('🔧 Loading Floating Footer Auto-Toggle...');
+
+// ======== ⚙️ SETTING WAKTU DI SINI ========
+const TIME_SETTINGS = {
+    // ⏱️ Waktu TAMPIL (dalam milidetik)
+    DISPLAY_TIME: {
+        MOBILE: 10000,    // 10 detik di mobile
+        DESKTOP: 15000    // 15 detik di desktop
+    },
+    
+    // 🔄 Interval ANTAR BUKA (dalam milidetik)  
+    INTERVAL_TIME: {
+        MOBILE: 120000,   // 2 menit di mobile
+        DESKTOP: 180000   // 3 menit di desktop
+    },
+    
+    // 🚀 Delay AWAL mulai (dalam milidetik)
+    INITIAL_DELAY: 5000   // 5 detik delay awal
+};
+// ======== END SETTING ========
+
+function initializeUniversalFooterToggle() {
+    console.log('🎯 Starting Footer Auto-Toggle...');
+    
+    const isMobile = window.innerWidth < 768;
+    
+    let autoToggleInterval;
+    let isAutoToggleRunning = true;
+    let cycleCount = 0;
+    
+    function openFooter() {
+        const footer = document.getElementById('floatingFooter');
+        const toggle = document.getElementById('floatingFooterToggle');
+        
+        if (footer && toggle) {
+            footer.classList.remove('collapsed');
+            toggle.querySelector('span').textContent = '−';
+            return true;
+        }
+        return false;
+    }
+    
+    function closeFooter() {
+        const footer = document.getElementById('floatingFooter');
+        const toggle = document.getElementById('floatingFooterToggle');
+        
+        if (footer && toggle) {
+            footer.classList.add('collapsed');
+            toggle.querySelector('span').textContent = '+';
+            return true;
+        }
+        return false;
+    }
+    
+    function runAutoToggleCycle() {
+        if (!isAutoToggleRunning || document.hidden) return;
+        
+        cycleCount++;
+        
+        const isMobile = window.innerWidth < 768;
+        const displayTime = TIME_SETTINGS.DISPLAY_TIME[isMobile ? 'MOBILE' : 'DESKTOP'];
+        
+        // Buka footer
+        if (openFooter()) {
+            // Tutup setelah waktu yg disetting
+            setTimeout(() => {
+                if (isAutoToggleRunning) {
+                    closeFooter();
+                }
+            }, displayTime);
+        }
+    }
+    
+    // Start dengan delay awal
+    setTimeout(() => {
+        const footer = document.getElementById('floatingFooter');
+        const toggle = document.getElementById('floatingFooterToggle');
+        
+        if (!footer || !toggle) {
+            setTimeout(initializeUniversalFooterToggle, 5000);
+            return;
+        }
+        
+        // Jalankan sekali langsung
+        runAutoToggleCycle();
+        
+        // Set interval sesuai setting
+        const isMobile = window.innerWidth < 768;
+        const intervalTime = TIME_SETTINGS.INTERVAL_TIME[isMobile ? 'MOBILE' : 'DESKTOP'];
+        
+        autoToggleInterval = setInterval(() => {
+            if (isAutoToggleRunning && !document.hidden) {
+                runAutoToggleCycle();
+            }
+        }, intervalTime);
+        
+    }, TIME_SETTINGS.INITIAL_DELAY);
+    
+    // Handle page visibility
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            closeFooter();
+        } else {
+            setTimeout(runAutoToggleCycle, 2000);
+        }
+    });
+}
+
+// Start system
+function startUniversalFooter() {
+    setTimeout(initializeUniversalFooterToggle, 2000);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startUniversalFooter);
+} else {
+    startUniversalFooter();
+}
+
+console.log('✅ Floating Footer Auto-Toggle loaded');
+</script>
 </body>
 </html>
