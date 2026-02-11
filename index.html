@@ -1222,7 +1222,7 @@
 
                 // Break Time Logic (12:00 - 13:00)
                 if (h === 12 && m % 10 === 0 && s === 0) {
-                    Island.show('Istirahat', 'Sedang Jam Istirahat 🕐', 'info', 8000);
+                    Island.show('Istirahat', 'Sedang Jam Istirahat 🕐', 'info', 10000);
                 }
 
                 // Time-based Greetings (fire once at the exact hour)
@@ -1239,7 +1239,7 @@
 
             updateTheme() {
                 const h = new Date().getHours();
-                const isLight = h >= 6 && h < 18;
+                const isLight = h >= 6 && h < 16;
                 document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
             },
 
