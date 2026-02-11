@@ -1276,10 +1276,10 @@
                 const now = {};
 
                 data.forEach(d => {
-                    const name = d.Dokter || '';
+                    const name = (d.Dokter || '').trim();
                     const st = (d.Status || '').toUpperCase();
                     const wasActive = this._prevDoctors[name];
-                    const isNowActive = checkTime(d.Jam) && st.includes('BUKA');
+                    const isNowActive = checkTime(d.Jam) && (st.includes('BUKA') || st.includes('PENUH'));
                     now[name] = isNowActive;
 
                     // Only fire if we have previous state (not first load)
@@ -1319,7 +1319,7 @@
                 // Pre-calculate Active State for Sorting
                 activeData.forEach(d => {
                     const s = (d.Status || '').toUpperCase();
-                    d._isActive = checkTime(d.Jam) && s.includes('BUKA');
+                    d._isActive = checkTime(d.Jam) && (s.includes('BUKA') || s.includes('PENUH'));
                 });
 
                 // Sorting: ACTIVE (Top) -> BUKA (4) -> PENUH (3) -> HANYA OPERASI (2) -> CUTI (1)
